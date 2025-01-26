@@ -1,6 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# preprocessing script for the Espace Richaud data
+
 # Define the path to the Excel file
 file_path = r"C:\Sync\namsor Dropbox\Elian CARSENAT\0_Coprophet\8_HackathonVersailles\CommerçantsConfidentiel\EspaceRichaud\Fréquentation journalière année par année_ELC.xlsx"
 
@@ -64,12 +66,18 @@ for sheet_name in excel_file.sheet_names:
 
 # create a column "affluence" with the number of visitors per day divided by total_2024 multiplied by 100
 all_data['affluence'] = all_data['NOMBRE DE VISITEURS'] / total_2024 * 100000
+# filter all rows with "affluence" <= 0
+all_data = all_data[all_data['affluence'] > 0]
+
+# replace the values of column "EXPOSITION ÉVÉNEMENT" with EXPO1, EXPO2, etc.
+all_data['expo'] = 'EXPO' + (all_data.groupby('EXPOSITION ÉVÉNEMENT').ngroup() + 1).astype(str)
+all_data['expo'] = all_data['expo'].str.replace('.0', '')
 # drop all columns except "date_standard" and "affluence"
-all_data = all_data[['date_standard', 'affluence']]
+all_data = all_data[['date_standard', 'affluence','expo']]
 # rename the column "date_standard" to "date"
 all_data = all_data.rename(columns={'date_standard': 'date'})
 # rename the column "affluence" to "ancienne_poste_affluence_base100k"
-all_data = all_data.rename(columns={'affluence': 'EspaceRichaud_affluence_base100k'})
+all_data = all_data.rename(columns={'affluence': 'versailles_espace_richaud_affluence_base100k'})
 # add a column train_valid_test
 all_data['train_valid_test'] = 'train'
 # set 'train_valid_test' to 'valid' for dates between 2024-12-01 and 2024-12-14 inclusive
@@ -78,6 +86,7 @@ all_data.loc[(all_data['date'] >= '2024-12-01') & (all_data['date'] <= '2024-12-
 all_data.loc[all_data['date'] >= '2024-12-15', 'train_valid_test'] = 'test'
 # save the DataFrame to a CSV file
 all_data.to_csv('versailles_espace_richaud_lieuculturel.csv', index=False)
+
 
 # Display the combined DataFrame
 print(all_data)
