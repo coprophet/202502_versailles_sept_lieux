@@ -1,25 +1,26 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# preprocessing script for the Espace Richaud data
+import myconfig
 
-# Define the path to the Excel file
-file_path = r"C:\Sync\namsor Dropbox\Elian CARSENAT\0_Coprophet\8_HackathonVersailles\CommerçantsConfidentiel\EspaceRichaud\Fréquentation journalière année par année_ELC.xlsx"
+# preprocessing script for the Espace Richaud data
+file_path = myconfig.root_path+"/1_EspaceRichaud/"
+file_name = file_path+"Fréquentation journalière année par année_ELC.xlsx"
 
 # Load the Excel file
-excel_file = pd.ExcelFile(file_path)
+excel_file = pd.ExcelFile(file_name)
 
 # Initialize an empty DataFrame to hold all the data
 all_data = pd.DataFrame()
 
 total_2024 = 0
 
-make_graph = False
+make_graph = True
 
 # Iterate through each sheet in the Excel file
 for sheet_name in excel_file.sheet_names:
     # Read the data from the current sheet
-    sheet_data = pd.read_excel(file_path, sheet_name=sheet_name)
+    sheet_data = pd.read_excel(file_name, sheet_name=sheet_name)
     # filter out the rows with missing values in the DATES column
     sheet_data = sheet_data.dropna(subset=['DATES'])
     # filter out the rows with "TOTAL" values in the DATES column
@@ -55,7 +56,7 @@ for sheet_name in excel_file.sheet_names:
         plt.legend(title='Exposition Événement')
         plt.tight_layout()
         # save the graph to a file with the name of the sheet
-        plt.savefig("EspaceRichaud_"+sheet_name + '.png')
+        plt.savefig(file_path+"EspaceRichaud_"+sheet_name + '.png')
         #plt.show()
         plt.close()
     
@@ -74,19 +75,28 @@ all_data['expo'] = 'EXPO' + (all_data.groupby('EXPOSITION ÉVÉNEMENT').ngroup()
 all_data['expo'] = all_data['expo'].str.replace('.0', '')
 # drop all columns except "date_standard" and "affluence"
 all_data = all_data[['date_standard', 'affluence','expo']]
-# rename the column "date_standard" to "date"
-all_data = all_data.rename(columns={'date_standard': 'date'})
-# rename the column "affluence" to "ancienne_poste_affluence_base100k"
-all_data = all_data.rename(columns={'affluence': 'versailles_espace_richaud_affluence_base100k'})
-# add a column train_valid_test
-all_data['train_valid_test'] = 'train'
-# set 'train_valid_test' to 'valid' for dates between 2024-12-01 and 2024-12-14 inclusive
-all_data.loc[(all_data['date'] >= '2024-12-01') & (all_data['date'] <= '2024-12-14'), 'train_valid_test'] = 'valid'
-# set 'train_valid_test' to 'test' for dates 2024-12-15 and after
-all_data.loc[all_data['date'] >= '2024-12-15', 'train_valid_test'] = 'test'
-# save the DataFrame to a CSV file
-all_data.to_csv('versailles_espace_richaud_lieuculturel.csv', index=False)
+# convert date to a date time
+all_data[myconfig.field_date] = pd.to_datetime(all_data['date_standard'])
 
+# all_data = all_data.rename(columns={'date_standard': myconfig.field_date})
+# rename the column "affluence" to "ancienne_poste_affluence_base100k"
+all_data = all_data.rename(columns={'affluence': myconfig.field_y})
+
+# add a column "y_value" with the value 
+all_data[myconfig.field_seriesname]='versailles_espace_richaud_affluence_base100k'
+# add a column train_valid_test
+all_data[myconfig.field_train_valid_test] = 'train'
+# set 'train_valid_test' to 'valid' for dates between 2024-12-01 and 2024-12-14 inclusive
+all_data.loc[(all_data[myconfig.field_date] >= '2024-12-01') & (all_data[myconfig.field_date] <= '2024-12-14'), myconfig.field_train_valid_test] = 'valid'
+# set 'train_valid_test' to 'test' for dates 2024-12-15 and after
+all_data.loc[all_data[myconfig.field_date] >= '2024-12-15', myconfig.field_train_valid_test] = 'test'
+# drop all columns except "date_standard" and "affluence"
+all_data = all_data[[myconfig.field_date, myconfig.field_y, myconfig.field_seriesname, myconfig.field_train_valid_test, 'expo']]
+# save the DataFrame to a CSV file
+all_data.to_csv(myconfig.opendata_path+'versailles_espace_richaud_lieuculturel.csv', index=False)
+
+all_train_valid_data = all_data[all_data[myconfig.field_train_valid_test] != 'test']
+all_train_valid_data.to_csv(myconfig.git_path+'versailles_espace_richaud_lieuculturel.csv', index=False)
 
 # Display the combined DataFrame
 print(all_data)
