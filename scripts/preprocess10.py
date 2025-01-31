@@ -35,7 +35,7 @@ for file in files:
 total_2024 = all_data[all_data[myconfig.field_date].dt.year == 2024]['Total TTC Net'].sum()
 # chance the type of the column "Date" to datetime
 # create a column "affluence" with the number of visitors per day divided by total_2024 multiplied by 100
-all_data['versailles_restaurant2_ca_ttc_base_100k'] = all_data['Total TTC Net'] / 2 * 100000
+all_data['versailles_restaurant2_ca_ttc_base_100k'] = all_data['Total TTC Net'] / total_2024 * 100000
 
 # drop all columns except "date_standard" and "affluence"
 all_data = all_data[[myconfig.field_date, 'versailles_restaurant2_ca_ttc_base_100k']]
