@@ -5,7 +5,7 @@ import os
 
 # preprocessing script for the Gonzague data
 # Define the path to the Excel file
-file_path = myconfig.root_path+"14_Renaud2/"
+file_path = myconfig.root_path+"13_Renaud1/"
 file_name = file_path+"Renaud_ELC.xlsx"
 
 
