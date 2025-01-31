@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import myconfig
 
 # preprocessing script for the Les Sables-d'Olonne
-file_path = myconfig.root_path+"/9_SaaSVersailles/"
-file_name = file_path+"saas_invoices_ELC.xlsx"
+file_path = myconfig.root_path+"/11_VetementsVersailles/"
+file_name = file_path+"export_hackathon_ELC.xlsx"
 
 # Initialize an empty DataFrame to hold all the data
 all_data = pd.DataFrame()
@@ -15,21 +15,28 @@ total_2024 = 0
 make_graph = True
 
 # Read the data from the current sheet
-all_data = pd.read_excel(file_name, sheet_name='HackathonExport')
+all_data = pd.read_excel(file_name, sheet_name='Page 1')
 # filter out the rows with missing values in the DATES column
-all_data = all_data.dropna(subset=['date'])
-all_data[myconfig.field_date] = pd.to_datetime(all_data['date'])
-print(all_data)
+all_data[myconfig.field_date] = pd.to_datetime(all_data['Date'])
+
+all_data = all_data[[myconfig.field_date, 'Montant', 'Type de comptabilisation']]
+
+# filter all the rows with the Type de comptabilisation as TIC
+all_data = all_data[all_data['Type de comptabilisation'] == 'TIC']
+# only keep the columns 'myconfig.field_date' and 'Montant'
+all_data = all_data[[myconfig.field_date, 'Montant']]
+all_data = all_data.groupby(myconfig.field_date).agg({'Montant': 'sum'}).reset_index()
+
 # sum the number of visitors for the year 2024
-total_2024 = all_data[all_data[myconfig.field_date].dt.year == 2024]['amount_usd'].sum()
+total_2024 = all_data[all_data[myconfig.field_date].dt.year == 2024]['Montant'].sum()
+
 print("total_2024: ", total_2024)
-all_data['saas_versailles_ca_base_10k'] = all_data['amount_usd'] / total_2024 * 10000
+all_data['versailles_vetements_ca_base_100k'] = all_data['Montant'] / total_2024 * 100000
 # group by date and sum the number of transactions and the total revenue
-all_data = all_data.groupby(myconfig.field_date).agg({'saas_versailles_ca_base_10k': 'sum'}).reset_index()
 # if make_graph: then make a graph with the total revenue per day and the number of transations per day and save it to a file
 if make_graph:
     plt.figure(figsize=(10, 6))
-    plt.plot(all_data[myconfig.field_date], all_data['saas_versailles_ca_base_10k'], marker='o', linestyle='-', color='red', label='Total Revenue')
+    plt.plot(all_data[myconfig.field_date], all_data['versailles_vetements_ca_base_100k'], marker='o', linestyle='-', color='red', label='Total Revenue')
     plt.title('Total Revenue Per Day')
     plt.xlabel('Date')
     plt.ylabel('Revenue')
@@ -37,16 +44,16 @@ if make_graph:
     plt.xticks(rotation=45)
     plt.legend(title='Revenue')
     plt.tight_layout()
-    plt.savefig(file_path+"saas_versailles.png")
+    plt.savefig(file_path+"versailles_vetements_1.png")
     plt.close()
 
 
 # all_data = all_data.rename(columns={'date_standard': myconfig.field_date})
 # rename the column "affluence" to "ancienne_poste_affluence_base100k"
-all_data = all_data.rename(columns={'saas_versailles_ca_base_10k': myconfig.field_y})
+all_data = all_data.rename(columns={'versailles_vetements_ca_base_100k': myconfig.field_y})
 
 # add a column "y_value" with the value 
-all_data[myconfig.field_seriesname]='saas_versailles_ca_base_10k'
+all_data[myconfig.field_seriesname]='versailles_vetements_ca_base_100k'
 # add a column train_valid_test
 all_data[myconfig.field_train_valid_test] = 'train'
 # set 'train_valid_test' to 'valid' for dates between 2024-12-01 and 2024-12-14 inclusive
@@ -56,10 +63,10 @@ all_data.loc[all_data[myconfig.field_date] >= myconfig.date_split_valid, myconfi
 # drop all columns except "date_standard" and "affluence"
 all_data = all_data[[myconfig.field_date, myconfig.field_y, myconfig.field_seriesname, myconfig.field_train_valid_test]]
 # save the DataFrame to a CSV file
-all_data.to_csv(myconfig.opendata_path+'saas_versailles.csv', index=False)
+all_data.to_csv(myconfig.opendata_path+'versailles_vetements_1.csv', index=False)
 
 all_train_valid_data = all_data[all_data[myconfig.field_train_valid_test] != 'test']
-all_train_valid_data.to_csv(myconfig.git_path+'saas_versailles.csv', index=False)
+all_train_valid_data.to_csv(myconfig.git_path+'versailles_vetements_1.csv', index=False)
 
 # Display the combined DataFrame
 print(all_data)
