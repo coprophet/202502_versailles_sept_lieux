@@ -87,9 +87,9 @@ all_data[myconfig.field_seriesname]='versailles_espace_richaud_affluence_base100
 # add a column train_valid_test
 all_data[myconfig.field_train_valid_test] = 'train'
 # set 'train_valid_test' to 'valid' for dates between 2024-12-01 and 2024-12-14 inclusive
-all_data.loc[(all_data[myconfig.field_date] >= '2024-12-01') & (all_data[myconfig.field_date] <= '2024-12-14'), myconfig.field_train_valid_test] = 'valid'
+all_data.loc[(all_data[myconfig.field_date] >= myconfig.date_split_train) & (all_data[myconfig.field_date] < myconfig.date_split_valid), myconfig.field_train_valid_test] = 'valid'
 # set 'train_valid_test' to 'test' for dates 2024-12-15 and after
-all_data.loc[all_data[myconfig.field_date] >= '2024-12-15', myconfig.field_train_valid_test] = 'test'
+all_data.loc[all_data[myconfig.field_date] >= myconfig.date_split_valid, myconfig.field_train_valid_test] = 'test'
 # drop all columns except "date_standard" and "affluence"
 all_data = all_data[[myconfig.field_date, myconfig.field_y, myconfig.field_seriesname, myconfig.field_train_valid_test, 'expo']]
 # save the DataFrame to a CSV file
