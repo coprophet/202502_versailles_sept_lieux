@@ -66,11 +66,11 @@ all_data = all_data.rename(columns={'onenation_shop_ca_ttc_base_100k': myconfig.
 # add a column "y_value" with the value 
 all_data[myconfig.field_seriesname]='onenation_shop_ca_ttc_base_100k'
 # add a column train_valid_test
-all_data['train_valid_test'] = 'train'
+all_data[myconfig.field_train_valid_test] = 'train'
 # set 'train_valid_test' to 'valid' for dates between 2024-12-01 and 2024-12-14 inclusive
-all_data.loc[(all_data[myconfig.field_date] >= myconfig.date_split_train) & (all_data[myconfig.field_date] < myconfig.date_split_valid), 'train_valid_test'] = 'valid'
+all_data.loc[(all_data[myconfig.field_date] >= myconfig.date_split_train) & (all_data[myconfig.field_date] < myconfig.date_split_valid), myconfig.field_train_valid_test] = 'valid'
 # set 'train_valid_test' to 'test' for dates 2024-12-15 and after
-all_data.loc[all_data[myconfig.field_date] >= myconfig.date_split_valid, 'train_valid_test'] = 'test'
+all_data.loc[all_data[myconfig.field_date] >= myconfig.date_split_valid, myconfig.field_train_valid_test] = 'test'
 # reorder by date ascending
 all_data = all_data.sort_values(myconfig.field_date, ascending=True)
 

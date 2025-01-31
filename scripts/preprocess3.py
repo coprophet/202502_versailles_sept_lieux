@@ -1,7 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import myconfig
 
-# preprocessing script for the Gonzague data
+# preprocessing script for the Tristan data
 
 # Define the path to the Excel file
 series_names=["volailler_paris","volailler_versailles"]
@@ -10,7 +11,7 @@ series_names=["volailler_paris","volailler_versailles"]
 files = {"volailler_paris":"Tableau croisé dynamique_ELC.xlsx",
          "volailler_versailles":"Tableau croisé dynamique versailles_ELC.xlsx"}
 
-root_file_path = r"C:\Sync\namsor Dropbox\Elian CARSENAT\0_Coprophet\8_HackathonVersailles\CommerçantsConfidentiel\TristanB"
+root_file_path = myconfig.root_path+"3_TristanB/"
 
 # if we should make a graph 
 make_graph = True
@@ -37,23 +38,21 @@ for series_name in series_names:
     column_name = series_name+'_ca_ttc_base_100k'
     sheet_data[column_name] = sheet_data['total_ca'] * 100000 / total_2024 
     print(sheet_data)
-    # drop all columns except "date_standard" and "affluence"
-    sheet_data = sheet_data[['date', column_name]]
+
+
     # add a column train_valid_test
-    sheet_data['train_valid_test'] = 'train'
+    sheet_data[myconfig.field_train_valid_test] = 'train'
     # set 'train_valid_test' to 'valid' for dates between 2024-12-01 and 2024-12-14 inclusive
-    sheet_data.loc[(sheet_data['date'] >= '2024-12-01') & (sheet_data['date'] <= '2024-12-14'), 'train_valid_test'] = 'valid'
+    sheet_data.loc[(sheet_data[myconfig.field_date] >= myconfig.date_split_train) & (sheet_data[myconfig.field_date] <  myconfig.date_split_valid), myconfig.field_train_valid_test] = 'valid'
     # set 'train_valid_test' to 'test' for dates 2024-12-15 and after
-    sheet_data.loc[sheet_data['date'] >= '2024-12-15', 'train_valid_test'] = 'test'
+    sheet_data.loc[sheet_data[myconfig.field_date] >=  myconfig.date_split_valid, myconfig.field_train_valid_test] = 'test'
     # reorder by date ascending
-    sheet_data = sheet_data.sort_values('date', ascending=True)
-    # save the DataFrame to a CSV file
-    sheet_data.to_csv(series_name+'.csv', index=False)
+    sheet_data = sheet_data.sort_values(myconfig.field_date, ascending=True)
 
     # if make_graph: then make a graph with the total revenue per day and the number of transations per day and save it to a file
     if make_graph:
         plt.figure(figsize=(10, 6))
-        plt.plot(sheet_data['date'], sheet_data[column_name], marker='o', linestyle='-', color='blue', label='Total Revenue')
+        plt.plot(sheet_data[myconfig.field_date], sheet_data[column_name], marker='o', linestyle='-', color='blue', label='Total Revenue')
         plt.title('Total Revenue Per Day')
         plt.xlabel('Date')
         plt.ylabel('Total Revenue')
@@ -61,8 +60,21 @@ for series_name in series_names:
         plt.xticks(rotation=45)
         plt.legend(title='Revenue (base 100k)')
         plt.tight_layout()
-        plt.savefig(series_name+".png")
+        plt.savefig(root_file_path+series_name+".png")
         plt.close()
 
+    # drop all columns except "date_standard" and "affluence"
+    sheet_data = sheet_data[[myconfig.field_date, column_name, myconfig.field_train_valid_test]]
+    # rename the column "affluence" to "ancienne_poste_affluence_base100k"
+    sheet_data = sheet_data.rename(columns={column_name: myconfig.field_y})
+    # add a column "y_value" with the value 
+    sheet_data[myconfig.field_seriesname]=column_name  
+    sheet_data = sheet_data[[myconfig.field_date, myconfig.field_y, myconfig.field_seriesname, myconfig.field_train_valid_test]]   
     # Display the combined DataFrame
     print(sheet_data)
+
+    # save the DataFrame to a CSV file
+    sheet_data.to_csv(myconfig.opendata_path+series_name+'.csv', index=False)
+    # save the public DataFrame to a CSV file
+    all_train_valid_data = sheet_data[sheet_data[myconfig.field_train_valid_test] != 'test']
+    all_train_valid_data.to_csv(myconfig.git_path+series_name+'.csv', index=False)
