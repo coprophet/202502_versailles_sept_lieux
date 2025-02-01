@@ -52,6 +52,10 @@ all_data.loc[(all_data[myconfig.field_date] >= myconfig.date_split_train) & (all
 all_data.loc[all_data[myconfig.field_date] >= myconfig.date_split_valid, myconfig.field_train_valid_test] = 'test'
 # drop all columns except "date_standard" and "affluence"
 all_data = all_data[[myconfig.field_date, myconfig.field_y, myconfig.field_seriesname, myconfig.field_train_valid_test]]
+# remove all data after the test date
+all_data = all_data[all_data[myconfig.field_date] <= myconfig.date_split_test]
+# sort by date
+all_data = all_data.sort_values(myconfig.field_date, ascending=True)
 # save the DataFrame to a CSV file
 all_data.to_csv(myconfig.opendata_path+'versailles_restaurant_1.csv', index=False)
 

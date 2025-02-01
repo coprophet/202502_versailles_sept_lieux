@@ -46,6 +46,8 @@ for series_name in series_names:
     sheet_data.loc[(sheet_data[myconfig.field_date] >= myconfig.date_split_train) & (sheet_data[myconfig.field_date] <  myconfig.date_split_valid), myconfig.field_train_valid_test] = 'valid'
     # set 'train_valid_test' to 'test' for dates 2024-12-15 and after
     sheet_data.loc[sheet_data[myconfig.field_date] >=  myconfig.date_split_valid, myconfig.field_train_valid_test] = 'test'
+    # remove all data after the test date
+    sheet_data = sheet_data[sheet_data[myconfig.field_date] <= myconfig.date_split_test]
     # reorder by date ascending
     sheet_data = sheet_data.sort_values(myconfig.field_date, ascending=True)
 

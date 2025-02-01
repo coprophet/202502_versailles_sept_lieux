@@ -90,8 +90,12 @@ all_data[myconfig.field_train_valid_test] = 'train'
 all_data.loc[(all_data[myconfig.field_date] >= myconfig.date_split_train) & (all_data[myconfig.field_date] < myconfig.date_split_valid), myconfig.field_train_valid_test] = 'valid'
 # set 'train_valid_test' to 'test' for dates 2024-12-15 and after
 all_data.loc[all_data[myconfig.field_date] >= myconfig.date_split_valid, myconfig.field_train_valid_test] = 'test'
+# remove all data after the test date
+all_data = all_data[all_data[myconfig.field_date] <= myconfig.date_split_test]
 # drop all columns except "date_standard" and "affluence"
 all_data = all_data[[myconfig.field_date, myconfig.field_y, myconfig.field_seriesname, myconfig.field_train_valid_test, 'expo']]
+# sort by date
+all_data = all_data.sort_values(myconfig.field_date, ascending=True)
 # save the DataFrame to a CSV file
 all_data.to_csv(myconfig.opendata_path+'versailles_espace_richaud_lieuculturel.csv', index=False)
 
