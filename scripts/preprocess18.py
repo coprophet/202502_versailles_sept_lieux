@@ -28,7 +28,7 @@ for file in files:
     # Append the data to the all_data DataFrame
     all_data = pd.concat([all_data, sheet_data], axis=0)
 
-
+all_data = all_data.groupby(myconfig.field_date).agg({'Production kW': 'sum'}).reset_index()
 total_2024 = all_data[all_data[myconfig.field_date].dt.year == 2024]['Production kW'].sum()
 print("total_2024: ", total_2024)
 # chance the type of the column "Date" to datetime

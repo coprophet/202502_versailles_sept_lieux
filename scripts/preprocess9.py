@@ -20,10 +20,12 @@ all_data = pd.read_excel(file_name, sheet_name='HackathonExport')
 all_data = all_data.dropna(subset=['date'])
 all_data[myconfig.field_date] = pd.to_datetime(all_data['date'])
 print(all_data)
+
 # sum the number of visitors for the year 2024
 total_2024 = all_data[all_data[myconfig.field_date].dt.year == 2024]['amount_usd'].sum()
 print("total_2024: ", total_2024)
 all_data['saas_versailles_ca_base_10k'] = all_data['amount_usd'] / total_2024 * 10000
+all_data[myconfig.field_date] = all_data[myconfig.field_date].dt.date
 # group by date and sum the number of transactions and the total revenue
 all_data = all_data.groupby(myconfig.field_date).agg({'saas_versailles_ca_base_10k': 'sum'}).reset_index()
 # if make_graph: then make a graph with the total revenue per day and the number of transations per day and save it to a file
@@ -43,6 +45,7 @@ if make_graph:
 
 # all_data = all_data.rename(columns={'date_standard': myconfig.field_date})
 # rename the column "affluence" to "ancienne_poste_affluence_base100k"
+all_data[myconfig.field_date] = pd.to_datetime(all_data[myconfig.field_date])
 all_data = all_data.rename(columns={'saas_versailles_ca_base_10k': myconfig.field_y})
 
 # add a column "y_value" with the value 

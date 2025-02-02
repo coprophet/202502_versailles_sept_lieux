@@ -20,6 +20,7 @@ all_data['date_fr'] = all_data['DateStr'].str.extract(r'Du (\d{2}/\d{2}/\d{4})')
 # parse the date in format 28/08/2024 to 2024-08-28
 all_data[myconfig.field_date] = pd.to_datetime(all_data['date_fr'], format='%d/%m/%Y')
 
+all_data = all_data.groupby(myconfig.field_date).agg({'CA Total': 'sum'}).reset_index()
 print(all_data)
 
 total_2024 = all_data[all_data[myconfig.field_date].dt.year == 2024]['CA Total'].sum()

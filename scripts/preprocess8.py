@@ -19,6 +19,8 @@ all_data = pd.read_excel(file_name, sheet_name='paris_vetements_ca_base_100k')
 # filter out the rows with missing values in the DATES column
 all_data = all_data.dropna(subset=['date'])
 all_data[myconfig.field_date] = pd.to_datetime(all_data['date'])
+# drop any values that are negative in the column "paris_vetements_ca_base_100k"
+all_data = all_data[all_data['paris_vetements_ca_base_100k'] >= 0]
 print(all_data)
 # sum the number of visitors for the year 2024
 total_2024 = all_data[all_data[myconfig.field_date].dt.year == 2024]['paris_vetements_ca_base_100k'].sum()

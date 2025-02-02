@@ -77,7 +77,7 @@ all_data['expo'] = all_data['expo'].str.replace('.0', '')
 all_data = all_data[['date_standard', 'affluence','expo']]
 # convert date to a date time
 all_data[myconfig.field_date] = pd.to_datetime(all_data['date_standard'])
-
+all_data = all_data.groupby([myconfig.field_date, 'expo']).agg({'affluence': 'sum'}).reset_index()
 # all_data = all_data.rename(columns={'date_standard': myconfig.field_date})
 # rename the column "affluence" to "ancienne_poste_affluence_base100k"
 all_data = all_data.rename(columns={'affluence': myconfig.field_y})
