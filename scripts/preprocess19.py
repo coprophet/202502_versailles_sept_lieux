@@ -28,7 +28,7 @@ all_data = all_data[['Nom du compteur', 'Comptage horaire', myconfig.field_date]
 all_data = all_data[all_data['Comptage horaire'] > 0]
 
 # group by date and sum the Comptahe horaire by Nom du compteur and by date
-all_data = all_data.groupby(['Nom du compteur', myconfig.field_date]).sum().reset_index()
+all_data = all_data.groupby([myconfig.field_date]).sum().reset_index()
 print(all_data.head())
 
 all_data[myconfig.field_date] = pd.to_datetime(all_data[myconfig.field_date])
