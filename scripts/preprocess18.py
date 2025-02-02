@@ -56,9 +56,9 @@ if make_graph:
     plt.ylabel('Production')
     plt.grid(True)
     plt.xticks(rotation=45)
-    plt.legend(title='Production')
+    plt.legend(title='Production') 
     # plot the outliers
-    plt.scatter(all_data[myconfig.field_date], all_data['limoges_moulinhydro_prod_base_100k'], c=all_data['color'], marker='o', s=200)
+    plt.scatter(all_data[myconfig.field_date], all_data['limoges_moulinhydro_prod_base_100k'], c=all_data['color'], marker='o', s=100)
     plt.tight_layout()
     plt.savefig(file_path+"limoges_moulinhydro.png")
     plt.close()
