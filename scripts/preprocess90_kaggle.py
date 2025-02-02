@@ -39,16 +39,15 @@ solution_data = all_data_test[[myconfig.field_id,myconfig.field_date, myconfig.f
 all_test_data = all_data_test[[myconfig.field_id,myconfig.field_date, myconfig.field_seriesname]]
 
 # save the DataFrame to a CSV file for Kaggle competition
-all_train_data.to_csv(myconfig.kaggle_path+'train.csv', index=False)
-all_test_data.to_csv(myconfig.kaggle_path+'test.csv', index=False)
+all_train_data.to_csv(myconfig.git_kaggle_path+'train.csv', index=False)
+all_test_data.to_csv(myconfig.git_kaggle_path+'test.csv', index=False)
 
-# solution for the Kaggle competition
-# set the solution_data usage to public if the column train_valid_test is 'valid' 
+# solution for the Kaggle competition (this is private, ie not in the github)
 solution_data.loc[solution_data[myconfig.field_train_valid_test] == 'valid', myconfig.field_usage] = 'Public'
 solution_data.loc[solution_data[myconfig.field_train_valid_test] == 'test', myconfig.field_usage] = 'Private'
 solution_data = solution_data[[myconfig.field_id, myconfig.field_usage, myconfig.field_y]]
-solution_data.to_csv(myconfig.kaggle_path+'solution.csv', index=False)
+solution_data.to_csv(myconfig.private_kaggle_path+'solution.csv', index=False)
 
 solution_data[myconfig.field_y] = 100
 solution_data = solution_data[[myconfig.field_id, myconfig.field_y]]
-solution_data.to_csv(myconfig.kaggle_path+'sample_submission.csv', index=False)
+solution_data.to_csv(myconfig.git_kaggle_path+'sample_submission.csv', index=False)
