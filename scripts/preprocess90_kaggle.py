@@ -17,7 +17,7 @@ for file in files:
     # read the CSV file sample.txt
     shop_data = pd.read_csv(file_path+file, sep=',')
     # check that the data has been read correctly with hearder date,y_value,series_name,train_valid_test
-    print(shop_data.head())
+    # print(shop_data.head())
 
     # append the data 
     all_data = pd.concat([all_data, shop_data], axis=0)
