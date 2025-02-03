@@ -3,26 +3,6 @@ import matplotlib.pyplot as plt
 import myconfig
 import os
 
-# preprocessing script for the Kaggle competition
-file_path = myconfig.opendata_path
-# read from the filesystem the list of all files in the directory file_path
-# Get the list of all files in the directory
-files = [f for f in os.listdir(file_path) if os.path.isfile(os.path.join(file_path, f)) and f.endswith('.csv')]
-
-# Initialize a empty DataFrames to hold all the data
-all_data = pd.DataFrame()
-
-for file in files:
-    print(file)
-    # read the CSV file sample.txt
-    shop_data = pd.read_csv(file_path+file, sep=',')
-    # check that the data has been read correctly with hearder date,y_value,series_name,train_valid_test
-    print(shop_data.head())
-
-    # append the data 
-    all_data = pd.concat([all_data, shop_data], axis=0)
-
-
 # Load the training and test data
 train_df = pd.read_csv(myconfig.git_kaggle_path+'train.csv', parse_dates=[myconfig.field_date])
 test_df = pd.read_csv(myconfig.git_kaggle_path+'test.csv', parse_dates=[myconfig.field_date])
