@@ -10,7 +10,7 @@ file_name = file_path+"Statistique - Game Story - ANCIENNE POSTE_ELC_v2.xlsx"
 # Initialize an empty DataFrame to hold all the data
 all_data = pd.DataFrame()
 
-total_2024 = 0
+
 
 make_graph = True
 
@@ -23,10 +23,11 @@ print(all_data)
 # sum the number of visitors for the year 2024
 total_2024 = all_data[all_data[myconfig.field_date].dt.year == 2024]['ancienne_poste_affluence_base100k'].sum()
 print("total_2024: ", total_2024)
+all_data['ancienne_poste_affluence_base10k']=all_data['ancienne_poste_affluence_base100k']*10000/total_2024
 # if make_graph: then make a graph with the total revenue per day and the number of transations per day and save it to a file
 if make_graph:
     plt.figure(figsize=(10, 6))
-    plt.plot(all_data[myconfig.field_date], all_data['ancienne_poste_affluence_base100k'], marker='o', linestyle='-', color='red', label='Affluence')
+    plt.plot(all_data[myconfig.field_date], all_data['ancienne_poste_affluence_base10k'], marker='o', linestyle='-', color='red', label='Affluence')
     plt.title('Total Affluence Per Day')
     plt.xlabel('Date')
     plt.ylabel('Affluence')
@@ -39,11 +40,11 @@ if make_graph:
 
 
 # all_data = all_data.rename(columns={'date_standard': myconfig.field_date})
-# rename the column "affluence" to "ancienne_poste_affluence_base100k"
-all_data = all_data.rename(columns={'ancienne_poste_affluence_base100k': myconfig.field_y})
+# rename the column "affluence" to "ancienne_poste_affluence_base10k"
+all_data = all_data.rename(columns={'ancienne_poste_affluence_base10k': myconfig.field_y})
 
 # add a column "y_value" with the value 
-all_data[myconfig.field_seriesname]='ancienne_poste_affluence_base100k'
+all_data[myconfig.field_seriesname]='ancienne_poste_affluence_base10k'
 # add a column train_valid_test
 all_data[myconfig.field_train_valid_test] = 'train'
 # set 'train_valid_test' to 'valid' for dates between 2024-12-01 and 2024-12-14 inclusive
