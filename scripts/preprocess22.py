@@ -28,6 +28,7 @@ total_2024 = all_data[all_data[myconfig.field_date].dt.year == 2024]['CA TTC'].s
 
 print("total_2024: ", total_2024)
 all_data['versailles_cookies_ca_ttc_base_100k'] = all_data['CA TTC'] / total_2024 * 100000
+all_data = all_data.groupby([myconfig.field_date]).sum().reset_index()
 # sort by date
 all_data = all_data.sort_values(myconfig.field_date, ascending=True)
 # group by date and sum the number of transactions and the total revenue

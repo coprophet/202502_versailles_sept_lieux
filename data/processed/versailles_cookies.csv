@@ -11,8 +11,7 @@ date,y_value,series_name,train_valid_test
 2024-06-27,369.17783260353997,versailles_cookies_ca_ttc_base_100k,train
 2024-06-28,635.4577984336823,versailles_cookies_ca_ttc_base_100k,train
 2024-06-29,337.0689191691706,versailles_cookies_ca_ttc_base_100k,train
-2024-06-30,433.24631568886315,versailles_cookies_ca_ttc_base_100k,train
-2024-06-30,11.947502673253723,versailles_cookies_ca_ttc_base_100k,train
+2024-06-30,445.1938183621169,versailles_cookies_ca_ttc_base_100k,train
 2024-07-02,446.08988106261086,versailles_cookies_ca_ttc_base_100k,train
 2024-07-03,219.53536162103714,versailles_cookies_ca_ttc_base_100k,train
 2024-07-04,346.0295461741109,versailles_cookies_ca_ttc_base_100k,train

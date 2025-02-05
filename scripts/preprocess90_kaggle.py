@@ -26,9 +26,9 @@ for file in files:
 all_data[myconfig.field_id] = all_data[myconfig.field_seriesname]+"_"+all_data[myconfig.field_date].astype(str)
 
 # check that the id is unique
-print(all_data[myconfig.field_id].is_unique)
+print("Has non unique IDs", all_data[myconfig.field_id].is_unique)
 # show all cases where the id is not unique
-print(all_data[all_data[myconfig.field_id].duplicated()])
+print("Non unique IDs", all_data[all_data[myconfig.field_id].duplicated()])
 
 all_data_train = all_data[all_data[myconfig.field_train_valid_test] == 'train']
 all_data_test = all_data[all_data[myconfig.field_train_valid_test] != 'train']
