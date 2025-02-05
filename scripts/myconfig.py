@@ -1,9 +1,11 @@
 root_path = "C:/Sync/namsor Dropbox/Elian CARSENAT/0_Coprophet/8_HackathonVersailles/CommerçantsConfidentiel/"
+extra_path = "C:/Sync/namsor Dropbox/Elian CARSENAT/0_Coprophet/8_HackathonVersailles/ExternalSeries/"
 opendata_path = "C:/Sync/namsor Dropbox/Elian CARSENAT/0_Coprophet/8_HackathonVersailles/CommerçantsOpenData/"
 private_kaggle_path = "C:/Sync/namsor Dropbox/Elian CARSENAT/0_Coprophet/8_HackathonVersailles/CommerçantsKaggle/"
 
 git_path = "C:/git/202502_versailles_sept_lieux/data/processed/"
 git_kaggle_path = "C:/git/202502_versailles_sept_lieux/data/kaggle/"
+git_extra_path = "C:/git/202502_versailles_sept_lieux/data/external/"
 date_split_train = '2024-12-01'
 date_split_valid = '2024-12-15'
 date_split_test = '2024-12-31'

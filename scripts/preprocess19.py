@@ -6,7 +6,7 @@ import os
 # preprocessing script for the Gonzague data
 # Define the path to the Excel file
 file_path = myconfig.root_path+"19_Vélos/"
-file = "sample.txt"
+file = "comptage-velo-donnees-compteurs.csv"
 # read the CSV file sample.txt
 all_data = pd.read_csv(file_path+file, sep=';')
 
@@ -25,13 +25,15 @@ all_data[myconfig.field_date] = all_data[myconfig.field_date].dt.date
 # only keep the columne : Identifiant du compteur;Nom du compteur;Identifiant du site de comptage;Nom du site de comptage;Comptage horaire;Date et heure de comptage
 all_data = all_data[['Nom du compteur', 'Comptage horaire', myconfig.field_date]]
 # fiter out data with a Comptage horaire of 0
-all_data = all_data[all_data['Comptage horaire'] > 0]
+all_data = all_data[all_data['Comptage horaire'] > 1]
 
 # group by date and sum the Comptahe horaire by Nom du compteur and by date
 all_data = all_data.groupby([myconfig.field_date]).sum().reset_index()
 print(all_data.head())
 
 all_data[myconfig.field_date] = pd.to_datetime(all_data[myconfig.field_date])
+# filter out data before 2023
+all_data = all_data[all_data[myconfig.field_date].dt.year >= 2023]
 
 total_2024 = all_data[all_data[myconfig.field_date].dt.year == 2024]['Comptage horaire'].sum()
 print("total_2024: ", total_2024)
