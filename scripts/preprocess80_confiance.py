@@ -16,8 +16,9 @@ all_data.index = all_data[myconfig.field_date]
 print("non interpolated ", all_data.head())
 # fill the rest of the month with interpolated values
 all_data = all_data.resample('D').interpolate("linear")
-print("interpolated ", all_data.head())
 all_data = all_data[all_data[myconfig.field_date] <= myconfig.date_split_test]
+all_data = all_data[all_data[myconfig.field_date] >= myconfig.date_minimal]
+print("interpolated ", all_data.head())
 # reorder columns 
 all_data.to_csv(myconfig.git_extra_path+'insee_confiance.csv', index=False)
 

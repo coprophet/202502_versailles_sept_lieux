@@ -46,6 +46,7 @@ all_data['résident'] = all_data['résident'] / all_data['résident'].mean()
 all_data['non-résident'] = all_data['non-résident'] / all_data['non-résident'].mean()
 
 all_data = all_data[all_data[myconfig.field_date] <= myconfig.date_split_test]
+all_data = all_data[all_data[myconfig.field_date] >= myconfig.date_minimal]
 # reorder columns 
 all_data = all_data[[myconfig.field_date, 'department_code', 'résident', 'non-résident', 'occupation']]
 all_data.to_csv(myconfig.git_extra_path+'tourisme.csv', index=False)

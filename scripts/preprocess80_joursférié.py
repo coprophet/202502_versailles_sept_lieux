@@ -18,8 +18,9 @@ print(all_data.head())
 all_data[myconfig.field_date] = pd.to_datetime(all_data['ToDateString'])
 all_data.drop(columns={'ToDateString','annee','zone','nom_jour_ferie','ToDateTime','ToDate'},inplace=True)
 
-print(all_data.head())
-
 all_data = all_data[all_data[myconfig.field_date] <= myconfig.date_split_test]
+all_data = all_data[all_data[myconfig.field_date] >= myconfig.date_minimal]
+print(all_data.head())
 # reorder columns 
 all_data.to_csv(myconfig.git_extra_path+'jours_ferie.csv', index=False)
+

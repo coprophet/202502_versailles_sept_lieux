@@ -36,9 +36,10 @@ all_data = all_data.rename(columns={'RR': 'RR_precipitation', 'TM': 'TM_temperat
 
 all_data = all_data.groupby([myconfig.field_date, 'department_code']).mean().reset_index()
 
-print(all_data.head())
 # keep the meteo till 2024-12-31
 all_data = all_data[all_data[myconfig.field_date] <= myconfig.date_split_test]
+all_data = all_data[all_data[myconfig.field_date] >= myconfig.date_minimal]
+print(all_data.head())
 all_data.to_csv(myconfig.git_extra_path+'france_meteo_v2.csv', index=False)
 
 
