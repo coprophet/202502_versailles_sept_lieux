@@ -1,4 +1,4 @@
-# Hackathon IA et Commerce Local, le 8-9 février 2025, au Sept-Lieux à Versailles (et en distanciel)
+# Hackathon IA et prévision du Commerce Local, le 8-9 février 2025, au Sept-Lieux à Versailles (et en distanciel)
 
 Prédir le futur, est-ce possible ?
 
