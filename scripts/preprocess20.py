@@ -20,6 +20,8 @@ all_data = pd.read_excel(file_name, sheet_name='A')
 all_data[myconfig.field_date] = pd.to_datetime(all_data['Date'])
 
 all_data = all_data[[myconfig.field_date, 'CA TTC']]
+# filter out otuliers in the CA TTC column having a value less than 0
+all_data = all_data[all_data['CA TTC'] > 0]
 
 # sum the number of visitors for the year 2024
 total_2024 = all_data[all_data[myconfig.field_date].dt.year == 2024]['CA TTC'].sum()

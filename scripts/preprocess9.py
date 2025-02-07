@@ -21,6 +21,9 @@ all_data = all_data.dropna(subset=['date'])
 all_data[myconfig.field_date] = pd.to_datetime(all_data['date'])
 print(all_data)
 
+# filter out otuliers in the CA TTC column having a value less than 0
+all_data = all_data[all_data['amount_usd'] > 1]
+
 # sum the number of visitors for the year 2024
 total_2024 = all_data[all_data[myconfig.field_date].dt.year == 2024]['amount_usd'].sum()
 print("total_2024: ", total_2024)
