@@ -35,3 +35,9 @@ Dimanche 16h : Fin de notre événement, car le Sept-Lieux enchaîne sur la **re
 
 NB/ les lycéennes/lycéens présents sur place et assidus sont invités à retirer un bon pour déjeuner gratuitement sur place au sept-lieux; autremnt les déjeuners, consommations, boissons etc. sont à la charge des participants. 
 
+## Soumettre une solution sur Kaggle
+Vous-êtes au Sept Lieux en présenciel ? Choisissez un nom d'équipe qui commence par comme VERsailles, par exemple Verrin ou Verre. 
+
+Voici le lien vers [Kaggle](https://www.kaggle.com/t/823cda1e3ae84d5eb204d9c0ca1ed2cb) pour soumettre vos solutions. 
+
+
