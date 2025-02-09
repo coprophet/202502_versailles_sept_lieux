@@ -11,16 +11,18 @@ all_data = pd.read_csv(file_path+file_name,delimiter=';')
 all_data['ToDateTimeStart'] = pd.to_datetime(all_data['Date de début'], format='%Y-%m-%dT%H:%M:%S%z', utc=True)
 all_data['ToDateTimeEnd'] = pd.to_datetime(all_data['Date de fin'], format='%Y-%m-%dT%H:%M:%S%z', utc=True)
 
-# iterate over all dates between 2010-01-01 and 2023-12-31 
-date = pd.to_datetime(myconfig.date_minimal, format='%Y-%m-%d', utc=True)
-date_max = pd.to_datetime(myconfig.date_split_test, format='%Y-%m-%d', utc=True)
 
 zones = ['Zone A', 'Zone B', 'Zone C']
 my_df = []
 # for each zone
 for zone in zones :
+    print("zone", zone)
     # select the data for the zone
     zone_data = all_data.loc[all_data['Zones'] == zone]
+    print("zone_data", zone_data)
+    # iterate over all dates between 2010-01-01 and 2023-12-31 
+    date = pd.to_datetime(myconfig.date_minimal, format='%Y-%m-%d', utc=True)
+    date_max = pd.to_datetime(myconfig.date_split_test, format='%Y-%m-%d', utc=True)
     while date < date_max:
         date = date + pd.DateOffset(days=1)
         fr_school_is_holiday = zone_data.loc[all_data['ToDateTimeEnd'] >= date]
